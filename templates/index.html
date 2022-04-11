@@ -42,7 +42,7 @@
 
         <form @submit="submit">
           <div class="input-group input-group-lg mb-3">
-            <input type="text" ref="guessInput" v-model="guessInput" class="form-control" placeholder="오늘의 단어는 무엇일까요?" @keydown="input">
+            <input type="text" ref="guessInput" v-model="guessInput" class="form-control" placeholder="오늘의 단어는 무엇일까요?" @keyup="input">
             <button type="submit" class="btn btn-outline-secondary">제출</button>
           </div>
         </form>
@@ -83,13 +83,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">정답입니다!</h5>
+              <h5 class="modal-title">[{{ lastGuess }}] 정답입니다!</h5>
             </div>
             <div class="modal-body">
-              ...
+              <label for="basic-url" class="form-label">다른 사람들에게 제출할 비밀 단어를 입력해주세요!<br><b>(주의: 한글 단어만 입력 가능합니다!)</b></label>
+              <div class="input-group mb-3">
+                <span class="input-group-text">비밀의 단어</span>
+                <input type="text" class="form-control" @keyup="inputSecret" ref="secretInput" v-model="secretInput">
+              </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Understood</button>
+              <button type="button" class="btn btn-primary">제출</button>
             </div>
           </div>
         </div>

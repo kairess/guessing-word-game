@@ -4,16 +4,23 @@ var app = new Vue({
     el: '#app',
     data: {
       guessInput: '',
+      secretInput: '',
+      lastGuess: '',
       modal: null,
     },
     methods: {
       input() {
-        this.guessInput = this.guessInput.replace(/\s/g, '');
+        this.guessInput = this.guessInput.replace(/[a-zA-Z\s]/g, '');
+      },
+      inputSecret() {
+        this.secretInput = this.secretInput.replace(/[a-zA-Z\s]/g, '');
       },
       submit(e) {
         e.preventDefault();
 
         if (this.guessInput) {
+          this.lastGuess = this.guessInput;
+
           const payload = {
             'guess_word': this.guessInput,
           }
@@ -24,6 +31,10 @@ var app = new Vue({
               if (res.data.status == 'success') {
                 if (res.data.result) { // correct
                   this.modal.show();
+                  
+                  setTimeout(() => {
+                    this.$refs.secretInput.focus();
+                  }, 500);
                 } else { // incorrect
                   alert('오답 ㅠㅠ');
                 }
@@ -43,17 +54,6 @@ var app = new Vue({
           keyboard: false,
           backdrop: 'static',
         });
-      },
-      moveBySpeed(dir) {
-        const payload = {
-          dir: dir
-        }
-  
-        axios
-          .post('/move_by_speed', payload)
-          .then((res) => {
-            console.log(res.data);
-          })
       },
     },
     mounted() {
