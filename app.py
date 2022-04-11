@@ -36,7 +36,6 @@ def guess():
         secret_embedding = model.encode(secret_word)
 
         similarity = float(cosine_similarity([secret_embedding], [guess_embedding])[0, 0])
-        print(similarity)
 
         response = {
             'status': 'success',

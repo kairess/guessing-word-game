@@ -7,6 +7,7 @@ var app = new Vue({
       secretInput: '',
       lastGuess: '',
       modal: null,
+      history: [],
     },
     methods: {
       input() {
@@ -36,16 +37,35 @@ var app = new Vue({
                     this.$refs.secretInput.focus();
                   }, 500);
                 } else { // incorrect
-                  alert('오답 ㅠㅠ');
+                  let className = 'bg-secondary';
+
+                  if (res.data.similarity > 0.9) {
+                    className = 'bg-danger';
+                  } else if (res.data.similarity > 0.7) {
+                    className = 'bg-warning';
+                  } else if (res.data.similarity > 0.5) {
+                    className = 'bg-secondary';
+                  }
+
+                  this.history.push({
+                    word: this.guessInput,
+                    similarity: (res.data.similarity * 100).toFixed(2),
+                    className: className
+                  });
+
+                  this.history.sort(function(first, second) {
+                    return second.similarity - first.similarity;
+                  });
                 }
               } else {
                 alert(res.message);
               }
+            })
+            .finally(() => {
+              this.guessInput = '';
+              this.$refs.guessInput.focus();
             });
         }
-
-        this.guessInput = '';
-        this.$refs.guessInput.focus();
       },
       init() {
         this.$refs.guessInput.focus();

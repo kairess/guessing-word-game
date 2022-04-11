@@ -37,9 +37,6 @@
       </header>
 
       <main>
-        <h1>Get started with Bootstrap</h1>
-        <p class="fs-5 col-md-8">Quickly and easily get started with Bootstrap's compiled, production-ready files with this barebones example featuring some basic HTML and helpful links. Download all our examples to get started.</p>
-
         <form @submit="submit">
           <div class="input-group input-group-lg mb-3">
             <input type="text" ref="guessInput" v-model="guessInput" class="form-control" placeholder="오늘의 단어는 무엇일까요?" @keyup="input">
@@ -47,9 +44,12 @@
           </div>
         </form>
 
-        <div class="mb-5">
-          <a href="/docs/5.1/examples/" class="btn btn-danger btn-sm px-4">포기</a>
-        </div>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center text-light" v-for="row in history">
+            {{ row.word }}
+            <span class="badge rounded-pill" :class="row.className">{{ row.similarity }}</span>
+          </li>
+        </ul>
 
         <hr class="col-3 col-md-2 mb-5">
 
