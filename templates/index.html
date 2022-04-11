@@ -37,6 +37,10 @@
       </header>
 
       <main>
+        <div class="alert alert-secondary" role="alert" v-if="message">
+          {{ message }}
+        </div>
+
         <form @submit="submit">
           <div class="input-group input-group-lg mb-3">
             <input type="text" ref="guessInput" v-model="guessInput" class="form-control" placeholder="오늘의 단어는 무엇일까요?" @keyup="input">
@@ -46,7 +50,7 @@
 
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center text-light" v-for="row in history">
-            {{ row.word }}
+            {{ row.i }}. {{ row.word }}
             <span class="badge rounded-pill" :class="row.className">{{ row.similarity }}</span>
           </li>
         </ul>
@@ -93,7 +97,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">제출</button>
+              <button type="button" class="btn btn-primary" @click="submitSecret">제출</button>
             </div>
           </div>
         </div>

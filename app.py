@@ -17,6 +17,8 @@ def index():
 
 @app.route('/guess', methods=['POST'])
 def guess():
+    global secret_word
+
     post_data = request.get_json()
     guess_word = post_data['guess_word'].strip()
 
@@ -45,6 +47,17 @@ def guess():
         }
 
     return jsonify(response)
+
+@app.route('/set_secret', methods=['POST'])
+def set_secret():
+    global secret_word
+
+    post_data = request.get_json()
+    secret_word = post_data['secret_word'].strip()
+
+    return jsonify({
+        'status': 'success',
+    })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5555)
