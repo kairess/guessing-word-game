@@ -2,7 +2,7 @@ from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from Model import Model
 from DB import query_db
 
@@ -13,7 +13,9 @@ df = pd.read_csv('data/kr_korean_nouns.csv')
 
 model = Model()
 
-secret_word = '친구'
+def get_latest(num=1):
+    latest = query_db('select * from hall_of_fame order by datetime desc limit ?', [num], one=True if num == 1 else False)
+    return latest
 
 @app.route('/')
 def index():
@@ -21,8 +23,6 @@ def index():
 
 @app.route('/guess', methods=['POST'])
 def guess():
-    global secret_word
-
     post_data = request.get_json()
     guess_word = post_data['guess_word'].strip()
 
@@ -32,8 +32,10 @@ def guess():
             'message': '단어를 입력해주세요.'
         })
 
-    lastest = query_db('select * from hall_of_fame order by datetime desc limit 1', one=True)
-    latest_datetime = datetime.strptime(lastest['datetime'], '%Y-%m-%d %H:%M:%S')
+    latest = get_latest()
+    latest_datetime = datetime.strptime(latest['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9)
+
+    print(latest_datetime, datetime.today())
 
     if latest_datetime.date() == datetime.today().date():
         return jsonify({
@@ -42,14 +44,14 @@ def guess():
             'message': '오늘 문제는 끝났습니다. 내일 아침 9시에 접속해주세요!'
         })
 
-    if guess_word == secret_word:
+    if guess_word == latest['word']:
         response = {
             'status': 'success',
             'result': True,
         }
     else:
         guess_embedding = model.encode(guess_word)
-        secret_embedding = model.encode(secret_word)
+        secret_embedding = model.encode(latest['word'])
 
         similarity = float(cosine_similarity([secret_embedding], [guess_embedding])[0, 0])
 
@@ -64,8 +66,6 @@ def guess():
 
 @app.route('/set_secret', methods=['POST'])
 def set_secret():
-    global secret_word
-
     post_data = request.get_json()
     user_secret_word = post_data['secret_word'].strip()
     username = post_data['secret_user'].strip()
@@ -79,18 +79,19 @@ def set_secret():
             'message': '[%s] 이 단어는 다른 사람이 맞추기 어렵습니다. 다른 단어를 입력해주세요!' % user_secret_word
         })
 
-    if secret_word == user_secret_word:
+    latest = get_latest()
+
+    if latest['word'] == user_secret_word:
         return jsonify({
             'status': 'failed',
             'message': '똑같은 단어를 입력할 수 없습니다!'
         })
 
-    secret_word = user_secret_word
-    message = '새로운 단어 [%s] 설정 완료! 친구에게 공유해서 단어를 맞추게 해보세요!' % secret_word
+    message = '새로운 단어 [%s] 설정 완료! 친구에게 공유해서 단어를 맞추게 해보세요!' % user_secret_word
 
     print(message)
 
-    query_db('insert into hall_of_fame (username, word) values (?, ?)', [username, secret_word])
+    query_db('insert into hall_of_fame (username, word) values (?, ?)', [username, user_secret_word])
 
     return jsonify({
         'status': 'success',
