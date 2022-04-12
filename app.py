@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
+from datetime import datetime
 from Model import Model
 from DB import query_db
 
@@ -29,6 +30,16 @@ def guess():
         return jsonify({
             'status': 'failed',
             'message': '단어를 입력해주세요.'
+        })
+
+    lastest = query_db('select * from hall_of_fame order by datetime desc limit 1', one=True)
+    latest_datetime = datetime.strptime(lastest['datetime'], '%Y-%m-%d %H:%M:%S')
+
+    if latest_datetime.date() == datetime.today().date():
+        return jsonify({
+            'status': 'failed',
+            'result': False,
+            'message': '오늘 문제는 끝났습니다. 내일 아침 9시에 접속해주세요!'
         })
 
     if guess_word == secret_word:
@@ -59,6 +70,9 @@ def set_secret():
     user_secret_word = post_data['secret_word'].strip()
     username = post_data['secret_user'].strip()
 
+    if username == '':
+        username = '(이름없음)'
+
     if len(df[df['단어'] == user_secret_word]) <= 0:
         return jsonify({
             'status': 'failed',
@@ -75,6 +89,8 @@ def set_secret():
     message = '새로운 단어 [%s] 설정 완료! 친구에게 공유해서 단어를 맞추게 해보세요!' % secret_word
 
     print(message)
+
+    query_db('insert into hall_of_fame (username, word) values (?, ?)', [username, secret_word])
 
     return jsonify({
         'status': 'success',
