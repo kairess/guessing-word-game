@@ -18,13 +18,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <!-- Favicons -->
-    <!-- <link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-    <link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#7952b3"> -->
+    <link rel="apple-touch-icon" href="/static/favicon.png" sizes="180x180">
+    <link rel="icon" href="/static/favicon.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/static/favicon.png" sizes="16x16" type="image/png">
+    <link rel="mask-icon" href="/static/favicon.png" color="#7952b3">
+    <link rel="icon" href="/static/favicon.png">
   </head>
 
   <body>
@@ -32,7 +30,7 @@
       <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
         <a href="/" class="d-flex align-items-center text-decoration-none">
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" class="me-2" viewBox="0 0 118 94" role="img"><title>Bootstrap</title><path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z" fill="currentColor"></path></svg>
-          <span class="fs-4">Starter template</span>
+          <span class="fs-4">단어 추리 게임</span>
         </a>
       </header>
 
@@ -72,25 +70,24 @@
             </ol>
 
             <ul class="icon-list">
-              <li><a href="https://github.com/twbs/bootstrap-npm-starter" rel="noopener" target="_blank">Bootstrap npm starter</a></li>
-              <li class="text-muted">Bootstrap Parcel starter (coming soon!)</li>
+              <li>오늘의 단어를 맞춘 분들 중에서, 가장 먼저 내일의 단어를 제출한 사람의 이름이 기록됩니다.</li>
+              <li class="text-muted">많은 분들의 재미를 위해서 자신이 낸 문제를 맞추는 행동은 삼가해주세요.</li>
             </ul>
           </div>
 
           <div class="col-md-6">
-            <h2>Guides</h2>
-            <p>Read more detailed instructions and documentation on using or contributing to Bootstrap.</p>
+            <h2 class="mb-3">Guides</h2>
+            <p>다른 사람이 출제한 단어(명사)를 맞추는 게임입니다.</p>
             <ul class="icon-list">
-              <li><a href="/docs/5.1/getting-started/introduction/">Bootstrap quick start guide</a></li>
-              <li><a href="/docs/5.1/getting-started/webpack/">Bootstrap Webpack guide</a></li>
-              <li><a href="/docs/5.1/getting-started/parcel/">Bootstrap Parcel guide</a></li>
-              <li><a href="/docs/5.1/getting-started/contribute/">Contributing to Bootstrap</a></li>
+              <li>매일 아침 9시부터 도전할 수 있습니다.</li>
+              <li>정답을 맞춘 사람이 내일의 단어를 새로 출제합니다.</li>
+              <li>가능하다면 정답 제출시 이름을 함께 입력해주세요.</li>
             </ul>
           </div>
         </div>
       </main>
       <footer class="pt-5 my-5 text-muted border-top">
-        Created by <a href="https://www.youtube.com/c/빵형의개발도상국">빵형의 개발도상국</a> &middot; &copy; 2022
+        Created by <a href="https://www.youtube.com/c/빵형의개발도상국">빵형의 개발도상국</a> &middot; <a href="https://www.m47rix.com">The Matrix</a> &copy; 2022
       </footer>
 
       <div class="modal fade" id="secretModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
