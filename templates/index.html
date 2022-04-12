@@ -95,9 +95,13 @@
               </div>
 
               <label for="basic-url" class="form-label">다른 사람들에게 제출할 비밀 단어를 입력해주세요!<br><b>(주의: 한글 단어만 입력 가능합니다!)</b></label>
-              <div class="input-group mb-3">
+              <div class="input-group mb-2">
                 <span class="input-group-text">비밀의 단어</span>
                 <input type="text" class="form-control" @keyup="inputSecret" ref="secretInput" v-model="secretInput">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">당신의 이름</span>
+                <input type="text" class="form-control"  v-model="secretUser">
               </div>
             </div>
             <div class="modal-footer">

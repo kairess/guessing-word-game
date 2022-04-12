@@ -5,6 +5,7 @@ var app = new Vue({
     data: {
       guessInput: '',
       secretInput: '',
+      secretUser: '',
       lastGuess: '',
       modal: null,
       history: [],
@@ -87,8 +88,11 @@ var app = new Vue({
         }
 
         const payload = {
+          secret_user: this.secretUser,
           secret_word: this.secretInput,
         };
+
+        document.cookie = `username=${this.secretUser}; expires=Fri, 31 Dec 2032 00:00:00 UTC`;
 
         axios
             .post('/set_secret', payload)
@@ -108,6 +112,22 @@ var app = new Vue({
           keyboard: false,
           backdrop: 'static',
         });
+
+        this.secretUser = this.getCookie('username');
+      },
+      getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+          let c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
       },
     },
     mounted() {

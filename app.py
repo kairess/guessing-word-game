@@ -57,6 +57,7 @@ def set_secret():
 
     post_data = request.get_json()
     user_secret_word = post_data['secret_word'].strip()
+    username = post_data['secret_user'].strip()
 
     if len(df[df['단어'] == user_secret_word]) <= 0:
         return jsonify({
