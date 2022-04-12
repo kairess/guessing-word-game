@@ -10,6 +10,7 @@ var app = new Vue({
       modal: null,
       history: [],
       message: '',
+      hof: [],
     },
     methods: {
       input() {
@@ -132,5 +133,11 @@ var app = new Vue({
     },
     mounted() {
       this.init();
+
+      axios
+          .get('/get_hof')
+          .then((res) => {
+            this.hof = res.data;
+          });
     }
   });

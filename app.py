@@ -21,6 +21,17 @@ def get_latest(num=1):
 def index():
     return send_from_directory('templates', 'index.html')
 
+@app.route('/get_hof')
+def get_hof():
+    latest = get_latest(num=100)
+
+    latest[0]['word'] = '???'
+
+    for i, l in enumerate(latest):
+        d = datetime.strptime(l['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9)
+        latest[i]['datetime'] = d.strftime('%Y-%m-%d %H:%M:%S')
+    return jsonify(latest)
+
 @app.route('/guess', methods=['POST'])
 def guess():
     post_data = request.get_json()
