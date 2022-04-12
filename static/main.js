@@ -91,6 +91,7 @@ var app = new Vue({
         const payload = {
           secret_user: this.secretUser,
           secret_word: this.secretInput,
+          trials: this.history.length,
         };
 
         document.cookie = `username=${this.secretUser}; expires=Fri, 31 Dec 2032 00:00:00 UTC`;
@@ -103,6 +104,7 @@ var app = new Vue({
                 this.hof.unshift({
                   id: this.hof[0].id + 1,
                   word: '???',
+                  trials: this.history.length,
                   username: this.secretUser,
                   datetime: '방금 전',
                 });

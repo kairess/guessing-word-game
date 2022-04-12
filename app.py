@@ -79,6 +79,7 @@ def set_secret():
     post_data = request.get_json()
     user_secret_word = post_data['secret_word'].strip()
     username = post_data['secret_user'].strip()
+    trials = int(post_data['trials'])
 
     if username == '':
         username = '(이름없음)'
@@ -101,7 +102,7 @@ def set_secret():
 
     print(message)
 
-    query_db('insert into hall_of_fame (username, word) values (?, ?)', [username, user_secret_word])
+    query_db('insert into hall_of_fame (username, word, trials) values (?, ?, ?)', [username, user_secret_word, trials])
 
     return jsonify({
         'status': 'success',
