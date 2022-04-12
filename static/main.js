@@ -94,11 +94,10 @@ var app = new Vue({
             .post('/set_secret', payload)
             .then((res) => {
               if (res.data.status == 'success') {
-                this.message = '새로운 단어를 설정하였습니다. 친구에게 공유해서 단어를 맞추게 해보세요!';
+                this.message = res.data.message;
                 this.modal.hide();
               } else {
                 this.message = res.data.message;
-                alert(res.data.message);
               }
             });
       },

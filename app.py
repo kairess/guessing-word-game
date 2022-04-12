@@ -1,11 +1,14 @@
 from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
 from Model import Model
 from DB import query_db
 
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': '*'}})
+
+df = pd.read_csv('data/kr_korean_nouns.csv')
 
 model = Model()
 
@@ -53,10 +56,28 @@ def set_secret():
     global secret_word
 
     post_data = request.get_json()
-    secret_word = post_data['secret_word'].strip()
+    user_secret_word = post_data['secret_word'].strip()
+
+    if len(df[df['단어'] == user_secret_word]) <= 0:
+        return jsonify({
+            'status': 'failed',
+            'message': '[%s] 이 단어는 다른 사람이 맞추기 어렵습니다. 다른 단어를 입력해주세요!' % user_secret_word
+        })
+
+    if secret_word == user_secret_word:
+        return jsonify({
+            'status': 'failed',
+            'message': '똑같은 단어를 입력할 수 없습니다!'
+        })
+
+    secret_word = user_secret_word
+    message = '새로운 단어 [%s] 설정 완료! 친구에게 공유해서 단어를 맞추게 해보세요!' % secret_word
+
+    print(message)
 
     return jsonify({
         'status': 'success',
+        'message': message
     })
 
 if __name__ == '__main__':

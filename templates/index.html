@@ -90,6 +90,10 @@
               <h5 class="modal-title">[{{ lastGuess }}] 정답입니다!</h5>
             </div>
             <div class="modal-body">
+              <div class="alert alert-danger" role="alert" v-if="message">
+                {{ message }}
+              </div>
+
               <label for="basic-url" class="form-label">다른 사람들에게 제출할 비밀 단어를 입력해주세요!<br><b>(주의: 한글 단어만 입력 가능합니다!)</b></label>
               <div class="input-group mb-3">
                 <span class="input-group-text">비밀의 단어</span>
