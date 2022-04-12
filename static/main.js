@@ -100,6 +100,13 @@ var app = new Vue({
             .then((res) => {
               if (res.data.status == 'success') {
                 this.message = res.data.message;
+                this.hof.unshift({
+                  id: this.hof[0].id + 1,
+                  word: '???',
+                  username: this.secretUser,
+                  datetime: '방금 전',
+                });
+
                 this.modal.hide();
               } else {
                 this.message = res.data.message;
