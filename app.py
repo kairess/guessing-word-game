@@ -44,11 +44,10 @@ def guess():
         })
 
     latest = get_latest()
-    latest_datetime = datetime.strptime(latest['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9)
+    latest_datetime = datetime.strptime(latest['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
+    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1, hours=9) # next day 9am
 
-    print(latest_datetime, datetime.today())
-
-    if latest_datetime.date() == datetime.today().date():
+    if datetime.now() < next_time:
         return jsonify({
             'status': 'failed',
             'result': False,
