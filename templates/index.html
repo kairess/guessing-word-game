@@ -62,7 +62,7 @@
             <h2 class="mb-3">명예의 전당</h2>
 
             <ol class="list-group mb-3">
-              <li class="list-group-item d-flex justify-content-between align-items-start text-light" v-for="row in hof">
+              <li class="list-group-item d-flex justify-content-between align-items-start text-light" v-for="(row, index) in hof" :class="{ 'bg-dark': index == 0 }">
                 <div class="ms-2 me-auto">
                   <div>{{ row.id }}회차 :: <span class="fw-bold">{{ row.word }}</span></div>
                   {{ row.username }}
