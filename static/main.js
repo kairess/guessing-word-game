@@ -15,10 +15,10 @@ var app = new Vue({
     },
     methods: {
       input() {
-        this.guessInput = this.guessInput.replace(/[^가-힣]/g, '');
+        // this.guessInput = this.guessInput.replace(/[^가-힣]/g, '');
       },
       inputSecret() {
-        this.secretInput = this.secretInput.replace(/[^가-힣]/g, '');
+        // this.secretInput = this.secretInput.replace(/[^가-힣]/g, '');
       },
       submit(e) {
         e.preventDefault();

@@ -64,7 +64,7 @@
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center text-light" v-for="row in history">
             {{ row.i }}. {{ row.word }}
-            <div class="progress" style="width: 80%;">
+            <div class="progress" style="width: 50%;">
               <div class="progress-bar" :class="row.className" role="progressbar" :style="{ width: row.similarity + '%' }">{{ row.similarity }}</div>
             </div>
           </li>
