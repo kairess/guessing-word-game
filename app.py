@@ -24,13 +24,24 @@ def index():
 @app.route('/get_hof')
 def get_hof():
     latest = get_latest(num=100)
+    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
+
+    is_solved = False
+
+    if latest_datetime.date() == datetime.today().date():
+        is_solved = True
+        latest[1]['word'] = '???'
 
     latest[0]['word'] = '???'
 
     for i, l in enumerate(latest):
         d = datetime.strptime(l['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9)
         latest[i]['datetime'] = d.strftime('%Y-%m-%d %H:%M:%S')
-    return jsonify(latest)
+
+    return jsonify({
+        'is_solved': is_solved,
+        'hof': latest,
+    })
 
 @app.route('/guess', methods=['POST'])
 def guess():
@@ -43,25 +54,35 @@ def guess():
             'message': '단어를 입력해주세요.'
         })
 
-    latest = get_latest()
-    latest_datetime = datetime.strptime(latest['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
-    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1, hours=9) # next day 9am
+    latest = get_latest(2)
+    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
 
-    if datetime.now() < next_time:
-        return jsonify({
-            'status': 'failed',
-            'result': False,
-            'message': '오늘 문제는 끝났습니다. 내일 아침 9시에 접속해주세요!'
-        })
+    is_solved = False
+    latest_word = latest[0]['word']
 
-    if guess_word == latest['word']:
+    if latest_datetime.date() == datetime.today().date():
+        is_solved = True
+        latest_word = latest[1]['word']
+
+    # next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1, hours=9) # next day 9am
+
+    # if datetime.now() < next_time:
+    #     return jsonify({
+    #         'status': 'failed',
+    #         'result': False,
+    #         'message': '오늘 문제는 끝났습니다. 내일 아침 9시에 접속해주세요!'
+    #     })
+
+    if guess_word == latest_word:
         response = {
             'status': 'success',
             'result': True,
+            'is_solved': is_solved,
+            'message': '오늘은 %s님께서 먼저 정답을 맞추셨습니다. 내일의 단어를 기대하세요!' % latest[0]['username']
         }
     else:
         guess_embedding = model.encode(guess_word)
-        secret_embedding = model.encode(latest['word'])
+        secret_embedding = model.encode(latest_word)
 
         similarity = float(cosine_similarity([secret_embedding], [guess_embedding])[0, 0])
 
@@ -70,6 +91,7 @@ def guess():
             'result': False,
             'post_data': post_data,
             'similarity': similarity,
+            'is_solved': is_solved,
         }
 
     return jsonify(response)

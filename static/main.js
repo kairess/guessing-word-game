@@ -3,6 +3,7 @@ const { Modal } = bootstrap;
 var app = new Vue({
     el: '#app',
     data: {
+      isSolved: false,
       guessInput: '',
       secretInput: '',
       secretUser: '',
@@ -32,6 +33,11 @@ var app = new Vue({
           axios
             .post('/guess', payload)
             .then((res) => {
+              this.isSolved = res.data.is_solved;
+              if (this.isSolved) {
+                this.message = res.data.message;
+              }
+
               if (res.data.status == 'success') {
                 if (res.data.result) { // correct
                   this.modal.show();
@@ -146,7 +152,8 @@ var app = new Vue({
       axios
           .get('/get_hof')
           .then((res) => {
-            this.hof = res.data;
+            this.isSolved = res.data.is_solved;
+            this.hof = res.data.hof;
           });
     }
   });
