@@ -24,8 +24,8 @@ def index():
 @app.route('/get_hof')
 def get_hof():
     latest = get_latest(num=100)
-    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
-    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1, hours=9) # next day 9am
+    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S')
+    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) # next day 9am KST
 
     is_solved = False
 
@@ -56,8 +56,8 @@ def guess():
         })
 
     latest = get_latest(2)
-    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(hours=9) # KST GMT+9
-    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1, hours=9) # next day 9am
+    latest_datetime = datetime.strptime(latest[0]['datetime'], '%Y-%m-%d %H:%M:%S')
+    next_time = latest_datetime.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1) # next day 9am KST
 
     is_solved = False
     latest_word = latest[0]['word']
